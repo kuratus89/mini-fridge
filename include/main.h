@@ -9,4 +9,14 @@ enum class LogLevel{
     INFO ,
     WARN ,
     ERRO , 
-}
+};
+
+enum class Sensor{
+    SCREEN,
+    POWER_SUPPLY,
+    TEMP1,
+    TEMP2,
+    PELTIER,
+    PUMP,
+    FANS,
+};

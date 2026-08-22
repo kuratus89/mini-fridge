@@ -5,12 +5,17 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 // #include <string>
-#include <vector>
+// #include <vector>
+#include <deque>
 
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 #define LOGO_NAME "KURA"
+#define CHECKUP_DELAY 350
+#define MAX_LOGS 8
+#define LOG_TEXT_SIZE 1
+#define LOG_DISPLAY_LINE (SCREEN_HEIGHT/(8*LOG_TEXT_SIZE))
 
 // PINS
 #define LED_PIN 2
@@ -24,7 +29,8 @@ Adafruit_SSD1306 display(SCREEN_WIDTH , SCREEN_HEIGHT , &Wire , -1);
 
 //Global variables 
 Stage stage;
-std::vector<String> sysLog;
+Sensor checkStage;
+std::deque<String> sysLog;
 
 const unsigned char logo[] PROGMEM = {
 0x00, 0x00, 0x00, 0x00,
@@ -67,6 +73,8 @@ void boot(){
   pinMode(LED_PIN , OUTPUT);
   digitalWrite(LED_PIN , HIGH);
   Wire.begin(OLED_SDA , OLED_SCL);
+  stage = Stage::BOOT_STAGE;
+  checkStage = Sensor::SCREEN;
 }
 
 
@@ -83,15 +91,22 @@ void displayBootLogo(){
 }
 
 void pushLog(String value , LogLevel logLevel){
-    
+    String log;
+    switch(logLevel){
+      case LogLevel::INFO:log = "INFO";break;
+      case LogLevel::WARN:log = "WARN";break;
+      case LogLevel::ERRO:log = "ERRO";break;
+    }
+    log = "[" + log + "]" + " " + value;
+    Serial.println(log);
+    sysLog.push_back(log);
+    while(sysLog.size()>MAX_LOGS)sysLog.pop_front();
 }
 
 void setup() {
   boot();
-  stage = Stage::CHECKUP_STAGE;
-
   if(!display.begin(SSD1306_SWITCHCAPVCC , 0x3C)){
-    Serial.println("oled not found!");
+    pushLog("Oled not found" , LogLevel::ERRO);
     stage = Stage::ERROR_STAGE;
     return;
   }
@@ -107,13 +122,71 @@ static inline void errorStage(){
   delay(15);
 }
 
-static inline void checkUpStage(){
+static inline void bootLogo(){
+  displayBootLogo();
+  delay(1000);
+  stage = Stage::CHECKUP_STAGE;
+}
+
+static inline void checkScreen(){
+  // already checked after boot
+  String val ="SCREEN DECTECTED  X:"+String(SCREEN_WIDTH) + " Y:"+ String(SCREEN_HEIGHT);
+  pushLog(val , LogLevel::INFO);
+  checkStage = Sensor::POWER_SUPPLY;
+}
+
+static inline void checkPowerSupply(){
+  // i think if this code is running , then power Supply is working?
+
+  checkStage = Sensor::TEMP1;
+}
+
+static inline void checkTemp1(){
+  
+  
 
 }
+static inline void checkTemp2(){
+
+}
+
+static inline void checkPeltier(){
+
+}
+static inline void checkPump(){
+
+}
+
+static inline void checkFans(){
+
+}
+
+void displayLog(){
+  int  visibleLine = min((int)sysLog.size() , LOG_DISPLAY_LINE);
+  display.clearDisplay();
+  display.setCursor(0,0);
+  display.setTextSize(LOG_TEXT_SIZE);
+  for(int i=sysLog.size() - visibleLine ; i<sysLog.size() ; i++)display.println(sysLog[i]);
+}
+
+static inline void checkUpStage(){
+  switch(checkStage){
+    case Sensor::SCREEN:checkScreen();break;
+    case Sensor::POWER_SUPPLY:checkPowerSupply();break;
+    case Sensor::TEMP1:checkTemp1();break;
+    case Sensor::TEMP2:checkTemp2();break;
+    case Sensor::PELTIER:checkPeltier();break;
+    case Sensor::PUMP:checkPump();break;
+    case Sensor::FANS:checkFans();break;
+  }
+
+}
+
 
 void loop() {
   switch(stage){
     case Stage::ERROR_STAGE:errorStage();break;
+    case Stage::BOOT_STAGE:bootLogo();break;
     case Stage::CHECKUP_STAGE:checkUpStage();break;
 
   }
