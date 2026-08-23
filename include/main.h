@@ -21,5 +21,5 @@ enum class Sensor{
     PELTIER2,
     PUMP,
     FANS,
-    NONE;
+    NONE,
 };

@@ -93,9 +93,9 @@ void displayBootLogo(){
 void pushLog(String value , LogLevel logLevel){
     String log;
     switch(logLevel){
-      case LogLevel::INFO:log = "INFO";break;
-      case LogLevel::WARN:log = "WARN";break;
-      case LogLevel::ERRO:log = "ERRO";break;
+      case LogLevel::INFO:log = "I";break;
+      case LogLevel::WARN:log = "W";break;
+      case LogLevel::ERRO:log = "E";break;
     }
     log = "[" + log + "]" + " " + value;
     Serial.println(log);
@@ -125,16 +125,16 @@ static inline void bootLogo(){
 
 static inline void checkScreen(){
   // already checked after boot
-  String val ="SCREEN DECTECTED  X:"+String(SCREEN_WIDTH) + " Y:"+ String(SCREEN_HEIGHT);
+  String val ="SCR ("+String(SCREEN_WIDTH) + ","+ String(SCREEN_HEIGHT) + ")";
   pushLog(val , LogLevel::INFO);
   checkStage = Sensor::POWER_SUPPLY;
 }
 
 static inline void checkPowerSupply(){
   // i think if this code is running , then power Supply is working?
+  // why did i even add this function?
 
   checkStage = Sensor::TEMP1;
-  // why did i even add this function?
 }
 
 static inline void checkTemp1(){
@@ -149,11 +149,11 @@ static inline void checkTemp1(){
 
 
   if(fail){
-    pushLog("Fail to check temperature 1" , LogLevel::ERRO);
+    pushLog("TEMP1 FAIL" , LogLevel::ERRO);
     stage = Stage::ERROR_STAGE;
     return;
   }
-  String log = "Temprature 1 : " + String(temp) + "C";
+  String log = "TEMP1:" + String(temp) + "C";
   pushLog(log , LogLevel::INFO);
   checkStage = Sensor::TEMP2;
 }
@@ -165,11 +165,11 @@ static inline void checkTemp2(){
   bool fail =0;
 
   if(fail){
-    pushLog("Fail to check temprature 2" , LogLevel::ERRO);
+    pushLog("TEMP2 FAIL" , LogLevel::ERRO);
     stage = Stage::ERROR_STAGE;
     return;
   }
-  String log = "Temprature 2 : " + String(temp); + "C";
+  String log = "TEMP2:" + String(temp) + "C";
   pushLog(log , LogLevel::INFO);
   checkStage = Sensor::PELTIER1;
 }
@@ -183,11 +183,11 @@ static inline void checkPeltier1(){
   //check code here->
 
   if(fail){
-    pushLog("Peltier module 1 fail" ,LogLevel::ERRO);
+    pushLog("PELT1 FAIL" ,LogLevel::ERRO);
     stage = Stage::ERROR_STAGE;
     return;
   }
-  String log = "Peltier module 1 PASS";
+  String log = "PELT1 PASS";
   pushLog(log , LogLevel::INFO);
   checkStage = Sensor::PELTIER2;
 }
@@ -199,12 +199,12 @@ static inline void checkPeltier2(){
   bool fail=0;
 
   if(fail){
-    pushLog("Peltier module 2 fail" , LogLevel::ERRO);
+    pushLog("PELT2 FAIL" , LogLevel::ERRO);
     stage = Stage::ERROR_STAGE;
     return;
   }
 
-  String log = "Peltier module 2 PASS";
+  String log = "PELT2 PASS";
   pushLog(log , LogLevel::INFO);
   checkStage = Sensor::PUMP;
 }
@@ -213,11 +213,11 @@ static inline void checkPump(){
   //check here->
 
   if(fail){
-    pushLog("Pump fail" ,LogLevel::ERRO);
+    pushLog("PUMP FAIL" ,LogLevel::ERRO);
     stage = Stage::ERROR_STAGE;
     return;
   }
-  pushLog("Pump module PASS" , LogLevel::INFO);
+  pushLog("PUMP PASS" , LogLevel::INFO);
   checkStage = Sensor::FANS;
 }
 
@@ -225,11 +225,11 @@ static inline void checkFans(){
   bool fail=0;
 
   if(fail){
-    pushLog("Fan fail" , LogLevel::ERRO);
+    pushLog("FAN FAIL" , LogLevel::ERRO);
     stage = Stage::ERROR_STAGE;
     return;
   }
-  pushLog("Fans module PASS" , LogLevel::INFO);
+  pushLog("FAN PASS" , LogLevel::INFO);
   checkStage = Sensor::NONE;
 }
 
@@ -239,6 +239,7 @@ void displayLog(){
   display.setCursor(0,0);
   display.setTextSize(LOG_TEXT_SIZE);
   for(int i=sysLog.size() - visibleLine ; i<sysLog.size() ; i++)display.println(sysLog[i]);
+  display.display();
 }
 
 
