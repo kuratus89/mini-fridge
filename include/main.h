@@ -3,6 +3,7 @@ enum class Stage{
     BOOT_STAGE,
     CHECKUP_STAGE,
     ERROR_STAGE,
+    HOME_STAGE,
 };
 
 enum class LogLevel{
@@ -16,7 +17,9 @@ enum class Sensor{
     POWER_SUPPLY,
     TEMP1,
     TEMP2,
-    PELTIER,
+    PELTIER1,
+    PELTIER2,
     PUMP,
     FANS,
+    NONE;
 };

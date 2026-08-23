@@ -115,12 +115,7 @@ void setup() {
   delay(1000);
 }
 
-static inline void errorStage(){
-  digitalWrite(LED_PIN , HIGH);
-  delay(10);
-  digitalWrite(LED_PIN , LOW);
-  delay(15);
-}
+
 
 static inline void bootLogo(){
   displayBootLogo();
@@ -139,26 +134,103 @@ static inline void checkPowerSupply(){
   // i think if this code is running , then power Supply is working?
 
   checkStage = Sensor::TEMP1;
+  // why did i even add this function?
 }
 
 static inline void checkTemp1(){
   
-  
+  // check temps? idk how to do that!
 
+  int temp =0;
+  bool fail=0;
+
+  // check code here->
+
+
+
+  if(fail){
+    pushLog("Fail to check temperature 1" , LogLevel::ERRO);
+    stage = Stage::ERROR_STAGE;
+    return;
+  }
+  String log = "Temprature 1 : " + String(temp) + "C";
+  pushLog(log , LogLevel::INFO);
+  checkStage = Sensor::TEMP2;
 }
 static inline void checkTemp2(){
+  // temp 2 ? , we have 2 temp sensor?
 
+  int temp =0;
+
+  bool fail =0;
+
+  if(fail){
+    pushLog("Fail to check temprature 2" , LogLevel::ERRO);
+    stage = Stage::ERROR_STAGE;
+    return;
+  }
+  String log = "Temprature 2 : " + String(temp); + "C";
+  pushLog(log , LogLevel::INFO);
+  checkStage = Sensor::PELTIER1;
 }
 
-static inline void checkPeltier(){
+static inline void checkPeltier1(){
 
+  int v =0;
+  int i =0;
+  int w =0;
+  bool fail= 0;
+  //check code here->
+
+  if(fail){
+    pushLog("Peltier module 1 fail" ,LogLevel::ERRO);
+    stage = Stage::ERROR_STAGE;
+    return;
+  }
+  String log = "Peltier module 1 PASS";
+  pushLog(log , LogLevel::INFO);
+  checkStage = Sensor::PELTIER2;
+}
+
+static inline void checkPeltier2(){
+  int v=0;
+  int i=0;
+  int w=0;
+  bool fail=0;
+
+  if(fail){
+    pushLog("Peltier module 2 fail" , LogLevel::ERRO);
+    stage = Stage::ERROR_STAGE;
+    return;
+  }
+
+  String log = "Peltier module 2 PASS";
+  pushLog(log , LogLevel::INFO);
+  checkStage = Sensor::PUMP;
 }
 static inline void checkPump(){
+  bool fail=0;
+  //check here->
 
+  if(fail){
+    pushLog("Pump fail" ,LogLevel::ERRO);
+    stage = Stage::ERROR_STAGE;
+    return;
+  }
+  pushLog("Pump module PASS" , LogLevel::INFO);
+  checkStage = Sensor::FANS;
 }
 
 static inline void checkFans(){
+  bool fail=0;
 
+  if(fail){
+    pushLog("Fan fail" , LogLevel::ERRO);
+    stage = Stage::ERROR_STAGE;
+    return;
+  }
+  pushLog("Fans module PASS" , LogLevel::INFO);
+  checkStage = Sensor::NONE;
 }
 
 void displayLog(){
@@ -169,16 +241,28 @@ void displayLog(){
   for(int i=sysLog.size() - visibleLine ; i<sysLog.size() ; i++)display.println(sysLog[i]);
 }
 
+
+static inline void errorStage(){
+  displayLog();
+  digitalWrite(LED_PIN , HIGH);
+  delay(10);
+  digitalWrite(LED_PIN , LOW);
+  delay(15);
+}
+
 static inline void checkUpStage(){
   switch(checkStage){
     case Sensor::SCREEN:checkScreen();break;
     case Sensor::POWER_SUPPLY:checkPowerSupply();break;
     case Sensor::TEMP1:checkTemp1();break;
     case Sensor::TEMP2:checkTemp2();break;
-    case Sensor::PELTIER:checkPeltier();break;
+    case Sensor::PELTIER1:checkPeltier1();break;
+    case Sensor::PELTIER2:checkPeltier2();break;
     case Sensor::PUMP:checkPump();break;
     case Sensor::FANS:checkFans();break;
+    case Sensor::NONE:stage = Stage::HOME_STAGE;
   }
+  displayLog();
 
 }
 
@@ -188,7 +272,7 @@ void loop() {
     case Stage::ERROR_STAGE:errorStage();break;
     case Stage::BOOT_STAGE:bootLogo();break;
     case Stage::CHECKUP_STAGE:checkUpStage();break;
-
+    case Stage::HOME_STAGE:while(1);
   }
 }
 
