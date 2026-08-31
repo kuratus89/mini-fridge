@@ -14,13 +14,13 @@
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 #define LOGO_NAME "KURA"
-#define CHECKUP_DELAY 350
 #define MAX_LOGS 8
 #define LOG_TEXT_SIZE 1
 #define LOG_DISPLAY_LINE (SCREEN_HEIGHT/(8*LOG_TEXT_SIZE))
 #define TEMP_SENSOR_DELAY 150
-#define PELTIER_SENSOR_DELAY 500
+#define PELTIER_SENSOR_DELAY 250
 #define FAN_SENSOR_DELAY 2000
+#define PUMP_SENSOR_DELAY 1500
 
 // PINS
 #define LED_PIN 2
@@ -33,7 +33,7 @@
 #define ROTARY_ENCODER_DT 39
 #define FAN_OUT_PIN 26
 #define FAN_IN_PIN 27
-#define PUMP_PINP 14
+#define PUMP_PIN 14
 #define PELTIER1_R_IS 18
 #define PELTIER1_L_IS 5
 #define PELTIER1_RPWM 17
@@ -42,6 +42,12 @@
 #define PELTIER2_R_IS 23
 #define PELTIER2_RPWM 4
 #define PELTIER2_LPWM 19
+#define PUMP_CH 0
+#define FAN_IN_CH 1
+#define FAN_OUT_CH 2
+#define PWM_FREQ 20000
+#define PWM_RES 8 
+
 
 
 
@@ -95,16 +101,19 @@ class SensorData{
     float pumpVoltage=NIL;
     float pumpCurrent=NIL;
     float pumpEnergy=NIL;
+    uint8_t pumpSpeed = 0;
     unsigned long pumpDelay = NIL;
 
     float fanInVoltage=NIL;
     float fanInCurrent=NIL;
     float fanInEnergy=NIL;
+    uint8_t fanInSpeed = 0;
     unsigned long fanInDelay =NIL;
 
     float fanOutVoltage=NIL;
     float fanOutCurrent=NIL;
     float fanOutEnergy=NIL;
+    uint8_t fanOutSpeed =0;
     unsigned long fanOutDelay = NIL;
 };
 extern SensorData sensorData;

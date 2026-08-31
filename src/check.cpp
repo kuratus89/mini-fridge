@@ -87,8 +87,14 @@ static inline void checkPeltier2(){
 }
 static inline void checkPump(bool init){
   bool fail=0;
-  //check here->
-  if(init && (!pump.begin()))fail=1;
+  if(init){
+    if(!pump.begin())fail=1;
+    else {
+      ledcSetup(PUMP_CH , PWM_FREQ , PWM_RES);
+      ledcAttachPin(PUMP_PIN , PUMP_CH);
+      ledcWrite(PUMP_CH , 0);
+    }
+  }
 
   if(fail){
     pushLog("PUMP FAIL" ,LogLevel::ERRO);
@@ -102,6 +108,11 @@ static inline void checkPump(bool init){
 static inline void checkFanIN(bool init){
   bool fail=0;
   if(init && (!fan_in.begin()))fail=1;
+  else {
+    ledcSetup(FAN_IN_CH , PWM_FREQ , PWM_RES);
+    ledcAttachPin(FAN_IN_PIN , FAN_IN_CH);
+    ledcWrite(FAN_IN_CH , 0);
+  }
   if(fail){
     pushLog("FAN FAIL" , LogLevel::ERRO);
     stage = Stage::ERROR_STAGE;
@@ -114,7 +125,11 @@ static inline void checkFanIN(bool init){
 static inline void checkFanOUT(bool init){
   bool fail=0;
   if(init && (!fan_out.begin()))fail=1;
-
+  else {
+    ledcSetup(FAN_OUT_CH , PWM_FREQ , PWM_RES);
+    ledcAttachPin(FAN_OUT_PIN , FAN_OUT_CH);
+    ledcWrite(FAN_OUT_CH , 0);
+  }
   if(fail){
     pushLog("FAN FAIL" , LogLevel::ERRO);
     stage = Stage::ERROR_STAGE;
