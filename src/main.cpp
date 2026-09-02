@@ -52,6 +52,8 @@ const unsigned char logo[] PROGMEM = {
 
 void boot(){
   Serial.begin(115200);
+  analogReadResolution(12);
+  analogSetAttenuation(ADC_11db);
   pinMode(LED_PIN , OUTPUT);
   digitalWrite(LED_PIN , HIGH);
   Wire.begin(SDA , SCL);

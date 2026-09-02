@@ -37,11 +37,28 @@ void updatePump(){
     sensorData.pumpEnergy = pump.getPower_mW();
 }
 
-bool updatePeltier1(){
-    unsigned long current = millis();
-    if(current - sensorData.peltier1Delay <PELTIER_SENSOR_DELAY)return;
-    sensorData.peltier1Delay = current;
-
+static inline float readCurrent(int pin){
+    int raw = analogRead(pin);
+    float v = (raw/ADC_MAX)* ADC_VREF;
+    float i_sense = v/R_SENSE;
+    float i_motor = i_sense*K_ILIS;
+    return i_motor;
 }
 
+bool updatePeltier1(){
+    unsigned long current_time = millis();
+    if(current_time - sensorData.peltier1Delay <PELTIER_SENSOR_DELAY)return;
+    sensorData.peltier1Delay = current_time;
+    float current = max(readCurrent(PELTIER1_R_IS) , readCurrent(PELTIER1_L_IS));
+    sensorData.peltier1Current = current;
+    sensorData.peltier1Energy = current*12;   
+}
 
+bool updatePeltier2(){
+    unsigned long current_time = millis();
+    if(current_time - sensorData.peltier2Delay < PELTIER_SENSOR_DELAY)return;
+    sensorData.peltier2Delay = current_time;
+    float current = max(readCurrent(PELTIER2_R_IS) , readCurrent(PELTIER2_L_IS));
+    sensorData.peltier2Current = current;
+    sensorData.peltier2Energy = current*12;
+}
