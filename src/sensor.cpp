@@ -45,7 +45,7 @@ static inline float readCurrent(int pin){
     return i_motor;
 }
 
-bool updatePeltier1(){
+void updatePeltier1(){
     unsigned long current_time = millis();
     if(current_time - sensorData.peltier1Delay <PELTIER_SENSOR_DELAY)return;
     sensorData.peltier1Delay = current_time;
@@ -54,11 +54,20 @@ bool updatePeltier1(){
     sensorData.peltier1Energy = current*12;   
 }
 
-bool updatePeltier2(){
+void updatePeltier2(){
     unsigned long current_time = millis();
     if(current_time - sensorData.peltier2Delay < PELTIER_SENSOR_DELAY)return;
     sensorData.peltier2Delay = current_time;
     float current = max(readCurrent(PELTIER2_R_IS) , readCurrent(PELTIER2_L_IS));
     sensorData.peltier2Current = current;
     sensorData.peltier2Energy = current*12;
+}
+
+void updateAllSensors(){
+    updateTemps();
+    updateFanIn();
+    updateFanOut();
+    updatePump();
+    updatePeltier1();
+    updatePeltier2();
 }

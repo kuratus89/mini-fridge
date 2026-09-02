@@ -5,7 +5,7 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include <deque>
+#include <stack>
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <Adafruit_INA219.h>
@@ -28,8 +28,8 @@
 
 // PINS
 #define LED_PIN 2
-#define SDA 22
-#define SCL 23
+#define SDA 21
+#define SCL 22
 #define TEMP_PIN 23
 #define CHAMBER_TEMP_MOIST_PIN 25
 #define ROTARY_ENCODER_SW 12
@@ -120,15 +120,15 @@ class SensorData{
 };
 extern SensorData sensorData;
 
-extern Stage stage;
+extern std::stack<Stage> stage;
 extern Sensor checkStage;
 
-extern Adafruit_SSD1306 display(SCREEN_WIDTH , SCREEN_HEIGHT , &Wire , -1);
-extern Adafruit_INA219 pump(0x40);
-extern Adafruit_INA219 fan_in(0x41);
-extern Adafruit_INA219 fan_out(0x42);
-extern OneWire oneWire(TEMP_PIN);
-extern DallasTemperature tempSensor(&oneWire);
+extern Adafruit_SSD1306 display;
+extern Adafruit_INA219 pump;
+extern Adafruit_INA219 fan_in;
+extern Adafruit_INA219 fan_out;
+extern OneWire oneWire;
+extern DallasTemperature tempSensor;
 
 
 void pushLog(String , LogLevel);

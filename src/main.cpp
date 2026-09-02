@@ -1,7 +1,9 @@
 #include "../include/main.h"
+#include <deque>
+
 
 //Global variables 
-Stage stage;
+std::stack<Stage> stage;
 Sensor checkStage;
 std::deque<String> sysLog;
 
@@ -54,10 +56,11 @@ void boot(){
   Serial.begin(115200);
   analogReadResolution(12);
   analogSetAttenuation(ADC_11db);
+  tempSensor.begin();
   pinMode(LED_PIN , OUTPUT);
   digitalWrite(LED_PIN , HIGH);
   Wire.begin(SDA , SCL);
-  stage = Stage::BOOT_STAGE;
+  stage.push(Stage::BOOT_STAGE);
   checkStage = Sensor::SCREEN;
 
   pump.begin();
@@ -104,7 +107,7 @@ void setup() {
   boot();
   if(!display.begin(SSD1306_SWITCHCAPVCC , 0x3C)){
     pushLog("Oled not found" , LogLevel::ERRO);
-    stage = Stage::ERROR_STAGE;
+    stage.push(Stage::ERROR_STAGE);
     return;
   }
 
@@ -117,7 +120,9 @@ void setup() {
 static inline void bootLogo(){
   displayBootLogo();
   delay(1000);
-  stage = Stage::CHECKUP_STAGE;
+  stage.pop();
+  stage.push(Stage::HOME_STAGE);
+  stage.push(Stage::CHECKUP_STAGE);
 }
 
 
@@ -136,7 +141,7 @@ static inline void errorStage(){
 
 
 void loop() {
-  switch(stage){
+  switch(stage.top()){
     case Stage::ERROR_STAGE:errorStage();break;
     case Stage::BOOT_STAGE:bootLogo();break;
     case Stage::CHECKUP_STAGE:checkUpStage(1);break;

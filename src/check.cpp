@@ -27,7 +27,7 @@ static inline void checkTemp1(bool init){
 
   if(fail){
     pushLog("TEMP1 FAIL" , LogLevel::ERRO);
-    stage = Stage::ERROR_STAGE;
+    stage.push(Stage::ERROR_STAGE);
     return;
   }
   String log = "TEMP1:" + String(temp) + "C";
@@ -43,7 +43,7 @@ static inline void checkTemp2(){
 
   if(fail){
     pushLog("TEMP2 FAIL" , LogLevel::ERRO);
-    stage = Stage::ERROR_STAGE;
+    stage.push(Stage::ERROR_STAGE);
     return;
   }
   String log = "TEMP2:" + String(temp) + "C";
@@ -61,7 +61,7 @@ static inline void checkPeltier1(){
 
   if(fail){
     pushLog("PELT1 FAIL" ,LogLevel::ERRO);
-    stage = Stage::ERROR_STAGE;
+    stage.push(Stage::ERROR_STAGE);
     return;
   }
   String log = "PELT1 PASS";
@@ -77,7 +77,7 @@ static inline void checkPeltier2(){
 
   if(fail){
     pushLog("PELT2 FAIL" , LogLevel::ERRO);
-    stage = Stage::ERROR_STAGE;
+    stage.push(Stage::ERROR_STAGE);
     return;
   }
 
@@ -98,7 +98,7 @@ static inline void checkPump(bool init){
 
   if(fail){
     pushLog("PUMP FAIL" ,LogLevel::ERRO);
-    stage = Stage::ERROR_STAGE;
+    stage.push(Stage::ERROR_STAGE);
     return;
   }
   pushLog("PUMP PASS" , LogLevel::INFO);
@@ -107,15 +107,17 @@ static inline void checkPump(bool init){
 
 static inline void checkFanIN(bool init){
   bool fail=0;
-  if(init && (!fan_in.begin()))fail=1;
-  else {
-    ledcSetup(FAN_IN_CH , PWM_FREQ , PWM_RES);
-    ledcAttachPin(FAN_IN_PIN , FAN_IN_CH);
-    ledcWrite(FAN_IN_CH , 0);
+  if(init){
+    if(!fan_in.begin())fail=1;
+    else {
+      ledcSetup(FAN_IN_CH , PWM_FREQ , PWM_RES);
+      ledcAttachPin(FAN_IN_PIN , FAN_IN_CH);
+      ledcWrite(FAN_IN_CH , 0);
+    }
   }
   if(fail){
     pushLog("FAN FAIL" , LogLevel::ERRO);
-    stage = Stage::ERROR_STAGE;
+    stage.push(Stage::ERROR_STAGE);
     return;
   }
   pushLog("FAN PASS" , LogLevel::INFO);
@@ -124,15 +126,17 @@ static inline void checkFanIN(bool init){
 
 static inline void checkFanOUT(bool init){
   bool fail=0;
-  if(init && (!fan_out.begin()))fail=1;
-  else {
-    ledcSetup(FAN_OUT_CH , PWM_FREQ , PWM_RES);
-    ledcAttachPin(FAN_OUT_PIN , FAN_OUT_CH);
-    ledcWrite(FAN_OUT_CH , 0);
+  if(init){
+    if(init && (!fan_out.begin()))fail=1;
+    else {
+      ledcSetup(FAN_OUT_CH , PWM_FREQ , PWM_RES);
+      ledcAttachPin(FAN_OUT_PIN , FAN_OUT_CH);
+      ledcWrite(FAN_OUT_CH , 0);
+    }
   }
   if(fail){
     pushLog("FAN FAIL" , LogLevel::ERRO);
-    stage = Stage::ERROR_STAGE;
+    stage.push(Stage::ERROR_STAGE);
     return;
   }
   pushLog("FAN PASS" , LogLevel::INFO);
@@ -151,7 +155,7 @@ static inline void checkFanOUT(bool init){
     case Sensor::PUMP:checkPump(init);break;
     case Sensor::FANIN:checkFanIN(init);break;
     case Sensor::FANOUT:checkFanOUT(init);break;
-    case Sensor::NONE:stage = Stage::HOME_STAGE;
+    case Sensor::NONE:stage.pop();
   }
   displayLog();
 }
