@@ -25,7 +25,16 @@
 #define K_ILIS 8500.0
 #define ADC_VREF 3.3
 #define ADC_MAX 4095.0
-
+#define DEBOUNCE_MS 200
+#define PUMP_CH 0
+#define FAN_IN_CH 1
+#define FAN_OUT_CH 2
+#define PWM_FREQ 20000
+#define PWM_RES 8 
+#define PELTIER1_RPWM_CH 3
+#define PELTIER1_LPWM_CH 4
+#define PELTIER2_RPWM_CH 5
+#define PELTIER2_LPWM_CH 6
 // PINS
 #define LED_PIN 2
 #define SDA 21
@@ -46,11 +55,7 @@
 #define PELTIER2_R_IS 32
 #define PELTIER2_RPWM 4
 #define PELTIER2_LPWM 19
-#define PUMP_CH 0
-#define FAN_IN_CH 1
-#define FAN_OUT_CH 2
-#define PWM_FREQ 20000
-#define PWM_RES 8 
+
 
 
 
@@ -94,10 +99,12 @@ class SensorData{
 
     float peltier1Current=NIL;
     float peltier1Energy=NIL;
+    int peltier1Speed =0;
     unsigned long peltier1Delay=NIL;
 
     float peltier2Current=NIL;
     float peltier2Energy=NIL;
+    int peltier2Speed = 0;
     unsigned long peltier2Delay=NIL;
 
     float pumpVoltage=NIL;
@@ -135,4 +142,7 @@ void pushLog(String , LogLevel);
 void displayLog();
 
 
+
 void checkUpStage(bool);
+
+void setupEncoder();

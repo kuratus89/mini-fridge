@@ -60,6 +60,10 @@ void boot(){
   pinMode(LED_PIN , OUTPUT);
   digitalWrite(LED_PIN , HIGH);
   Wire.begin(SDA , SCL);
+  pinMode(ROTARY_ENCODER_CLK , INPUT);
+  pinMode(ROTARY_ENCODER_DT , INPUT);
+  pinMode(ROTARY_ENCODER_SW , INPUT_PULLUP);
+  setupEncoder();
   stage.push(Stage::BOOT_STAGE);
   checkStage = Sensor::SCREEN;
 

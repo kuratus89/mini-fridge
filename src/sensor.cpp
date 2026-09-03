@@ -63,6 +63,9 @@ void updatePeltier2(){
     sensorData.peltier2Energy = current*12;
 }
 
+
+
+
 void updateAllSensors(){
     updateTemps();
     updateFanIn();
@@ -70,4 +73,50 @@ void updateAllSensors(){
     updatePump();
     updatePeltier1();
     updatePeltier2();
+}
+
+volatile int32_t encoderPos =0;
+
+volatile bool encoderBtnPressed = 0;
+
+static volatile uint8_t lastState =0;
+static unsigned long lastBtnMillis =0;
+
+void IRAM_ATTR encoderISR(){
+    uint8_t clk = digitalRead(ROTARY_ENCODER_CLK);
+    uint8_t dt = digitalRead(ROTARY_ENCODER_DT);
+    uint8_t state = (clk<<1)| dt;
+
+    if(clk==LOW){
+        if(dt ==HIGH)encoderPos++;
+        else encoderPos--;
+    }
+    lastState = state;
+}
+
+void IRAM_ATTR encoderBtnISR(){
+    unsigned long now = millis();
+    if(now - lastBtnMillis > DEBOUNCE_MS){
+        encoderBtnPressed = 1;
+        lastBtnMillis = now;
+    }
+}
+
+void setupEncoder(){
+    attachInterrupt(digitalPinToInterrupt(ROTARY_ENCODER_CLK) , encoderISR , FALLING);
+    attachInterrupt(digitalPinToInterrupt(ROTARY_ENCODER_SW) , encoderBtnISR , FALLING);
+}
+
+static uint8_t lastEncoderPos=0;
+
+int getDeltaEncoderPos(){
+    int delta = encoderPos - lastEncoderPos;
+    lastEncoderPos = encoderPos;
+    return delta;
+}
+
+bool isEncoderPressed(){
+    bool value = encoderBtnPressed;
+    encoderBtnPressed =0;
+    return value;
 }
