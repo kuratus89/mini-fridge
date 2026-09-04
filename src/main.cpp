@@ -13,7 +13,11 @@ Adafruit_INA219 fan_in(0x41);
 Adafruit_INA219 fan_out(0x42);
 OneWire oneWire(TEMP_PIN);
 DallasTemperature tempSensor(&oneWire);
+DHT chamberTemp(CHAMBER_TEMP_MOIST_PIN , DHT22);
 SensorData sensorData;
+State state = State::OFF;
+AutoSystemData autoSystemData;
+ManualSystemData manualSystemData;
 
 const unsigned char logo[] PROGMEM = {
 0x00, 0x00, 0x00, 0x00,
@@ -57,6 +61,7 @@ void boot(){
   analogReadResolution(12);
   analogSetAttenuation(ADC_11db);
   tempSensor.begin();
+  chamberTemp.begin();
   pinMode(LED_PIN , OUTPUT);
   digitalWrite(LED_PIN , HIGH);
   Wire.begin(SDA , SCL);
@@ -149,7 +154,8 @@ void loop() {
     case Stage::ERROR_STAGE:errorStage();break;
     case Stage::BOOT_STAGE:bootLogo();break;
     case Stage::CHECKUP_STAGE:checkUpStage(1);break;
-    case Stage::HOME_STAGE:while(1);
+    case Stage::HOME_STAGE:home();break;
+    case Stage::TEMP_CHANGE:tempChange();break;
   }
 }
 

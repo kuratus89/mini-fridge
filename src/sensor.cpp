@@ -10,6 +10,14 @@ void updateTemps(){
     // if(sensorData.tempout == DEVICE_DISCONNECTED_C)return ;
 }
 
+void updateChamberTemp(){
+    unsigned long current = millis();
+    if(current - sensorData.tempChamberDelay < CHAMBER_TEMP_SENSOR_DELAY)return;
+    sensorData.tempChamberDelay = current;
+    sensorData.tempChamber = chamberTemp.readTemperature(0);
+    sensorData.moist = chamberTemp.readHumidity();
+}
+
 void updateFanIn(){
     unsigned long current = millis();
     if(current - sensorData.fanInDelay < FAN_SENSOR_DELAY)return;
@@ -109,9 +117,9 @@ void setupEncoder(){
 
 static uint8_t lastEncoderPos=0;
 
-int getDeltaEncoderPos(){
+int getDeltaEncoderPos(bool take){
     int delta = encoderPos - lastEncoderPos;
-    lastEncoderPos = encoderPos;
+    if(take)lastEncoderPos = encoderPos;
     return delta;
 }
 
@@ -120,3 +128,34 @@ bool isEncoderPressed(){
     encoderBtnPressed =0;
     return value;
 }
+
+float& getTempIn(){
+    return sensorData.tempin;
+}
+
+float getTempOut(){
+    return sensorData.tempout;
+}
+
+float getChamberTemp(){
+    return sensorData.tempChamber;
+}
+float getMoist(){
+    return sensorData.moist;
+}
+uint8_t getPeltier1(){
+    return sensorData.peltier1Speed;
+}
+uint8_t getPeltier2(){
+    return sensorData.peltier2Speed;
+}
+uint8_t getFanInSpeed(){
+    return sensorData.fanInSpeed;
+}
+uint8_t getFanOutSpeed(){
+    return sensorData.fanOutSpeed;
+}
+uint8_t getPumpSpeed(){
+    return sensorData.pumpSpeed;
+}
+

@@ -9,6 +9,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <Adafruit_INA219.h>
+#include <DHT.h>
 
 #define NIL -1
 #define SCREEN_WIDTH 128
@@ -18,6 +19,7 @@
 #define LOG_TEXT_SIZE 1
 #define LOG_DISPLAY_LINE (SCREEN_HEIGHT/(8*LOG_TEXT_SIZE))
 #define TEMP_SENSOR_DELAY 150
+#define CHAMBER_TEMP_SENSOR_DELAY 500
 #define PELTIER_SENSOR_DELAY 250
 #define FAN_SENSOR_DELAY 2000
 #define PUMP_SENSOR_DELAY 1500
@@ -35,6 +37,8 @@
 #define PELTIER1_LPWM_CH 4
 #define PELTIER2_RPWM_CH 5
 #define PELTIER2_LPWM_CH 6
+#define TEMP_HYSTERESIS 2.0f
+#define AUTO_SYSTEM_DELAY 200
 // PINS
 #define LED_PIN 2
 #define SDA 21
@@ -70,6 +74,7 @@ enum class Stage{
     CHECKUP_STAGE,
     ERROR_STAGE,
     HOME_STAGE,
+    TEMP_CHANGE,
 };
 
 enum class LogLevel{
@@ -91,11 +96,40 @@ enum class Sensor{
     NONE,
 };
 
+enum class State{
+    OFF,
+    ONLY_FAN,
+    AUTO,
+    MANUAL,
+};
+
+class AutoSystemData{
+    public:
+    unsigned long delay=0;
+    float desireTemps=0;
+
+};
+extern AutoSystemData autoSystemData;
+class ManualSystemData{
+    public:
+    unsigned long delay=0;
+    uint8_t power=0;
+    uint8_t fanInSpeed=100;
+    uint8_t fanOutSpeed=100;
+    uint8_t pumpSpeed =100;
+    bool cooling=1;
+};
+extern ManualSystemData manualSystemData;
+
 class SensorData{
     public:
     float tempin=NIL;
     float tempout=NIL;
     unsigned long tempDelay=NIL;
+
+    unsigned long tempChamberDelay= NIL;
+    float tempChamber = NIL;
+    float moist = NIL;
 
     float peltier1Current=NIL;
     float peltier1Energy=NIL;
@@ -136,6 +170,7 @@ extern Adafruit_INA219 fan_in;
 extern Adafruit_INA219 fan_out;
 extern OneWire oneWire;
 extern DallasTemperature tempSensor;
+extern DHT chamberTemp;
 
 
 void pushLog(String , LogLevel);
@@ -146,3 +181,30 @@ void displayLog();
 void checkUpStage(bool);
 
 void setupEncoder();
+
+void pushLog(String value , LogLevel logLevel);
+
+void updateAllSensors();
+
+float& getTempIn();
+float getTempOut();
+float getChamberTemp();
+float getMoist();
+uint8_t getPeltier1();
+uint8_t getPeltier2();
+uint8_t getFanInSpeed();
+uint8_t getFanOutSpeed();
+uint8_t getPumpSpeed();
+int getDeltaEncoderPos(bool take);
+bool isEncoderPressed();
+
+
+void setPeltier1(int8_t speed);
+void setPeltier2(int8_t speed);
+void setFanInSpeed(uint8_t speed);
+void setFanOutSpeed(uint8_t speed);
+void setPumpSpeed(uint8_t speed);
+
+
+void home();
+void tempChange();

@@ -1,2 +1,2 @@
 # mini-fridge
-a small fridge for diet coke
+it is a small fridge for diet coke 
