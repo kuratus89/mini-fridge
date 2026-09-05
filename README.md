@@ -41,8 +41,33 @@ In this mode you have to set every thing on your own , like how much cooling it 
 - `src/control.cpp` — PWM and driver helpers for actuators
 - `src/system.cpp` —  control loop (auto/manual) and safety stuff
 
+# Schematic 
+<img width="906" height="613" alt="{00911E46-8959-47F2-9295-1D12837B0314}" src="https://github.com/user-attachments/assets/c84db43f-5c9c-4cd6-997a-301cb6677663" />
+
 # CAD
 
-# Schematic
+## Full body
+<img width="606" height="529" alt="{6C90B3C3-C4DE-4B13-B39D-83AFB3EAACE5}" src="https://github.com/user-attachments/assets/1bc80d45-3780-47bb-95f1-cc9e2e49cd10" />
+<img width="648" height="489" alt="{61141543-0FD0-4A17-90AE-6EF8423B7EC3}" src="https://github.com/user-attachments/assets/fa022ab1-bc9a-425e-b351-ec73e9f0cdce" />
+
+## Main Chamber
+
+<img width="415" height="409" alt="{4593166A-A573-4287-BCA8-D1BA4FFC081E}" src="https://github.com/user-attachments/assets/be3d51d2-6fee-45e7-a9d1-9d0074fec33a" />
+
+## Door
+
+<img width="415" height="387" alt="{906CC347-AB07-424B-85BE-3F9864C790FA}" src="https://github.com/user-attachments/assets/610ef832-dde5-4e6c-85dc-b7d903f557b9" />
+
+## Upper Chamber 
+
+<img width="511" height="312" alt="{BBC463F1-F698-48B9-A9F4-ABC879EF27EC}" src="https://github.com/user-attachments/assets/dffba705-a606-4f67-b7c6-a4c406804d96" />
+
+## Back Cover
+
+<img width="422" height="394" alt="{0966B65D-5965-4FD0-AD55-19C8B5D2FB89}" src="https://github.com/user-attachments/assets/cdc5e27c-1776-479f-a196-3ee3fb4d2cc9" />
+
+## Lower Chamber 
+
+<img width="412" height="382" alt="{8D0E43AC-5870-4A4B-9BEF-C23560752F2E}" src="https://github.com/user-attachments/assets/e0123fe5-511e-418f-97e1-dcd457e955d6" />
 
 # BOM
