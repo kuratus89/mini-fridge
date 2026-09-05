@@ -10,7 +10,7 @@ In this mode you just have to set the desire temperature and the fridge itself w
 ## Manual Mode
 In this mode you have to set every thing on your own , like how much cooling it should do? ( in percent)
 
-#Hardware
+# Hardware
 
 - Esp32 (NodeMCU-32S) to control and manage all components
 - SSD1306 OLED display (I2C)
@@ -23,7 +23,7 @@ In this mode you have to set every thing on your own , like how much cooling it 
 
 (there are other components also but this list is for the components that i can control from firmware , you can find the list of all components in bom below!)
 
-## Libraries
+# Libraries
 
 - adafruit ssd1306
 - adafruit GFX library
