@@ -71,3 +71,4 @@ In this mode you have to set every thing on your own , like how much cooling it 
 <img width="412" height="382" alt="{8D0E43AC-5870-4A4B-9BEF-C23560752F2E}" src="https://github.com/user-attachments/assets/e0123fe5-511e-418f-97e1-dcd457e955d6" />
 
 # BOM
+https://docs.google.com/spreadsheets/d/1UBUqanrUFpSi6QHUGbMFJ8Iq06dwHC4YZDE9zaKxZ_s/edit?usp=sharing
