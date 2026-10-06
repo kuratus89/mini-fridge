@@ -1,0 +1,26 @@
+name,link,count,price in inr,total price in inr,total price in dollors,reason
+M274 360-Degree Rotary Encoder Sensor Brick Module,https://makerbazar.in/products/360-degrees-rotary-encoder-module-brick-sensor-switch-development-ky-040?variant=40479186944151,1,46,#NAME?,#NAME?,to navigate in ui
+DS18B20 Water Proof Temperature Probe,https://makerbazar.in/products/ds18b20-waterproof-temperature-probe?variant=31673819299936,5,50,#NAME?,#NAME?,to sense temprature in peltier module from both side
+1.3 Inch I2C OLED Display Module 4 Pin WHITE,https://robu.in/product/1-3-inch-i2c-oled-display-module-4-pin-white/,1,309,309,#NAME?,for display
+xcluma Tec1-12715 Thermoelectric Cooler Peltier Module 12V 165W Max,https://makerbazar.in/products/thermoelectric-cooler-tec-cooling-plate-peltier-module?variant=48251020345584,2,512,#NAME?,#NAME?,"its the main components , to cool/worm the fridge"
+BTS7960,https://makerbazar.in/products/double-bts7960-43a-h-bridge-high-power-stepper-motor-driver-module?variant=43367688765680,2,329,#NAME?,#NAME?,"its driver for peltier module , i can control its speed and also read its usage current from just 1 module"
+DHT22,https://makerbazar.in/products/dht22-am2302-temperature-and-humidity-sensor-module-for-arduino-rpi-stm-dht22-with-pcb?variant=43359534481648,2,119,#NAME?,#NAME?,to sesnse temprature and humidity inside fridge
+"INA219 I2C Bi-Directional Current & Power Monitoring Module
+",https://robu.in/product/cjmcu-219-ina219-i2c-interface-no-drift-bi-directional-current-power-monitoring-sensor-module/,3,119,#NAME?,#NAME?,to monitor power/current/voltage in pump and fans!
+IRLZ44N,https://robu.in/product/irlz44n/,8,39,#NAME?,#NAME?,to control fan and pumps
+7SEVEN® 12V 600W 50A SMPS Power Supply,https://amzn.in/d/09N8ZxIz,1,1638,#NAME?,#NAME?,to power whole fridge!
+CentIoT - 240mm Radiator Water Cooler Tubes Heat Exchanger Aluminum Water Cooling CPU Heat Sink,https://amzn.in/d/00MNIfbr,1,3348,#NAME?,#NAME?,its to cool down the hot water comming from peltier module
+Water Cooling Head Water Cooling Plate 40*80mm,https://robu.in/product/water-cooling-head-water-cooling-plate-4080mm/,1,259,#NAME?,#NAME?,i will put peltier module on it
+12V DC Water Pump HG-633 8 Wat,https://amzn.in/d/0hwQ8iI4,1,256,#NAME?,#NAME?,"to pump water , so that water can flow and transport heat!"
+Fourdot® 120mm 5Inch Axial Cabinet Cooling Fan 12V,https://amzn.in/d/02JjlfIV,3,275,#NAME?,#NAME?,to cool down radiator and i will also put it inside the fridge
+2M (6.56FT) Transparent PVC Water Cooling Tube Pipe ,https://amzn.in/d/0b4LYXQa,3,200,#NAME?,#NAME?,pipe to transport water!
+Hose Clamps,https://amzn.in/d/047wzjAs,2,169,#NAME?,#NAME?,"for pipes , so that they dont get plug out and wet all the electric components"
+General Purpose Printed Circuit Board,https://amzn.in/d/0fFZs36j,2,180,#NAME?,#NAME?,i will make all circuit in this board
+solder wire,https://amzn.in/d/0csd65LK,1,750,#NAME?,#NAME?,for soldering
+solder flux paste,https://amzn.in/d/04hYBlsY,2,200,#NAME?,#NAME?,for soldering
+thermal paste,https://amzn.in/d/0aTGz9cJ,1,709,#NAME?,#NAME?,for good thermal transfer between water block and peltier module
+power cord,https://amzn.in/d/0gWVABSI,1,400,#NAME?,#NAME?,to power smp
+SCREWS,https://amzn.in/d/015C95sX,1,237,#NAME?,#NAME?,"for mounting components like smp , radiator , pcb , motor , heatsink , peltier module , water block , fridge door"
+esp32,https://robu.in/product/esp32-wroom-32d-iot-development-doard-module-for-arduino/,1,719,719,#NAME?,to control everything
+filament,https://amzn.in/d/0iGrKClQ,1,849,849,#NAME?,to print fridge body
+TOTAL,,,,,158.3191489,
