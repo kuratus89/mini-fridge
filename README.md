@@ -42,7 +42,9 @@ In this mode you have to set every thing on your own , like how much cooling it 
 - `src/system.cpp` —  control loop (auto/manual) and safety stuff
 
 # Schematic 
-<img width="906" height="613" alt="{00911E46-8959-47F2-9295-1D12837B0314}" src="https://github.com/user-attachments/assets/c84db43f-5c9c-4cd6-997a-301cb6677663" />
+<!-- <img width="906" height="613" alt="{00911E46-8959-47F2-9295-1D12837B0314}" src="https://github.com/user-attachments/assets/c84db43f-5c9c-4cd6-997a-301cb6677663" /> -->
+<img width="780" height="542" alt="{AABFDBE5-DF85-4EE6-B012-1DC84C596725}" src="https://github.com/user-attachments/assets/0f44e249-3d75-4104-b8ee-a10af3c16037" />
+
 
 # CAD
 
