@@ -7,7 +7,7 @@ std::stack<Stage> stage;
 Sensor checkStage;
 std::deque<String> sysLog;
 
-Adafruit_SSD1306 display(SCREEN_WIDTH , SCREEN_HEIGHT , &Wire , -1);
+Adafruit_ILI9341 display(TFT_CS , TFT_DC , TFT_RST);
 Adafruit_INA219 pump(0x40);
 Adafruit_INA219 fan_in(0x41);
 Adafruit_INA219 fan_out(0x42);
@@ -79,15 +79,14 @@ void boot(){
 
 
 void displayBootLogo(){
-  display.clearDisplay();
-  display.drawBitmap((SCREEN_WIDTH - LOGO_WIDTH)/2 , (SCREEN_HEIGHT - LOGO_HEIGHT)/2 , logo , 32 , 32 ,SSD1306_WHITE);
+  display.fillScreen(ILI9341_BLACK);
+  display.drawBitmap((SCREEN_WIDTH - LOGO_WIDTH)/2 , (SCREEN_HEIGHT - LOGO_HEIGHT)/2 , logo , 32 , 32 ,ILI9341_WHITE);
   
   display.setCursor((SCREEN_WIDTH - (4*6))/2 , ((SCREEN_HEIGHT - LOGO_HEIGHT)/2)+LOGO_HEIGHT + 1 );
   display.setTextSize(1);
-  display.setTextColor(SSD1306_WHITE);
+  display.setTextColor(ILI9341_WHITE);
   
   display.println(LOGO_NAME);
-  display.display();
 }
 
 void pushLog(String value , LogLevel logLevel){
@@ -104,22 +103,19 @@ void pushLog(String value , LogLevel logLevel){
 }
 
 void displayLog(){
-  int  visibleLine = min((int)sysLog.size() , LOG_DISPLAY_LINE);
-  display.clearDisplay();
-  display.setCursor(0,0);
+  int visibleLine = min((int)sysLog.size(), LOG_DISPLAY_LINE);
+  display.fillScreen(ILI9341_BLACK);
+  display.setCursor(0, 0);
   display.setTextSize(LOG_TEXT_SIZE);
-  for(int i=sysLog.size() - visibleLine ; i<sysLog.size() ; i++)display.println(sysLog[i]);
-  display.display();
+  display.setTextColor(ILI9341_WHITE, ILI9341_BLACK);
+  for(int i = sysLog.size() - visibleLine; i < sysLog.size(); i++)display.println(sysLog[i]);
 }
 
 void setup() {
   boot();
-  if(!display.begin(SSD1306_SWITCHCAPVCC , 0x3C)){
-    pushLog("Oled not found" , LogLevel::ERRO);
-    stage.push(Stage::ERROR_STAGE);
-    return;
-  }
-
+  display.begin();
+  display.setRotation(1);
+  display.fillScreen(ILI9341_BLACK);
   displayBootLogo();
   delay(1000);
 }

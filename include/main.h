@@ -4,7 +4,8 @@
 
 #include <Wire.h>
 #include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+// #include <Adafruit_SSD1306.h>
+#include <Adafruit_ILI9341.h>
 #include <stack>
 #include <OneWire.h>
 #include <DallasTemperature.h>
@@ -12,8 +13,10 @@
 #include <DHT.h>
 
 #define NIL -1
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 64
+// #define SCREEN_WIDTH 128
+// #define SCREEN_HEIGHT 64
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 240
 #define LOGO_NAME "KURA"
 #define MAX_LOGS 8
 #define LOG_TEXT_SIZE 1
@@ -59,6 +62,9 @@
 #define PELTIER2_R_IS 32
 #define PELTIER2_RPWM 4
 #define PELTIER2_LPWM 19
+#define TFT_CS    5
+#define TFT_DC    13
+#define TFT_RST   -1 
 
 
 
@@ -164,7 +170,7 @@ extern SensorData sensorData;
 extern std::stack<Stage> stage;
 extern Sensor checkStage;
 
-extern Adafruit_SSD1306 display;
+extern Adafruit_ILI9341 display;
 extern Adafruit_INA219 pump;
 extern Adafruit_INA219 fan_in;
 extern Adafruit_INA219 fan_out;
